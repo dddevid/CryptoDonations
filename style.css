@@ -1,85 +1,109 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #1a1a1a;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
+html, body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a1a1a; /* Dark mode default */
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for dark mode */
 }
 
 .container {
-    background: #333;
-    border-radius: 10px;
-    padding: 30px;
-    width: 80%;
-    max-width: 900px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background: rgba(51, 51, 51, 0.8); /* Semi-transparent background */
+  border-radius: 10px;
+  padding: 30px;
+  width: 80%;
+  max-width: 900px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 80vh;
+  backdrop-filter: blur(10px); /* Blur effect for background */
 }
 
 header h1 {
-    margin-bottom: 10px;
-    font-size: 2rem;
-    color: #ff6f61;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  color: #ff6f61;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Add text shadow */
 }
 
 .wallet-connection button {
-    background-color: #ff6f61;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: #ff6f61;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Add transform transition */
+  margin-bottom: 20px; 
 }
 
 .wallet-connection button:hover {
-    background-color: #ff4d3a;
+  background-color: #ff4d3a;
+  transform: translateY(-2px); /* Slight lift on hover */
 }
 
 .donation-options {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .crypto-card {
-    background-color: #444;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 15px 0;
-    transition: transform 0.2s ease-in-out;
+  background-color: rgba(68, 68, 68, 0.7); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 8px;
+  margin: 15px 0;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Add box-shadow transition */
 }
 
 .crypto-card:hover {
-    transform: scale(1.05);
-    background-color: #555;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 10px;
-    border-radius: 5px;
-    font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 footer {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #bbb;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #bbb;
+}
+
+
+/* Dark Mode Toggle */
+.dark-mode {
+  background-color: #fff;
+  color: #1a1a1a;
+}
+
+.dark-mode .container {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.dark-mode .crypto-card {
+  background-color: rgba(220, 220, 220, 0.7);
 }
