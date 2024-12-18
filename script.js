@@ -1,24 +1,3 @@
-let web3;
-let currentProvider;
-
-// Funzione per connettere il wallet
-document.getElementById('connect-wallet').addEventListener('click', async () => {
-    if (window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        try {
-            // Richiedi l'accesso all'account
-            await window.ethereum.enable();
-            const accounts = await web3.eth.getAccounts();
-            currentProvider = accounts[0];
-            alert(`Connesso al wallet: ${currentProvider}`);
-        } catch (error) {
-            console.error('L\'utente ha negato l\'accesso o si è verificato un errore', error);
-        }
-    } else {
-        alert("Wallet Web3 non rilevato. Si prega di installare MetaMask o un altro wallet Web3.");
-    }
-});
-
 // Funzione per copiare l'indirizzo negli appunti
 function copyToClipboard(address) {
     navigator.clipboard.writeText(address)
@@ -30,30 +9,47 @@ function copyToClipboard(address) {
         });
 }
 
-// Funzione per inviare una donazione
-async function sendDonation(crypto, amount) {
-    if (!web3) {
-        alert("Per favore, connetti il tuo wallet prima di fare una donazione.");
-        return;
-    }
+// Funzione per inviare una donazione tramite wallet Web3
+async function donateWithWallet(crypto) {
+    if (typeof window.ethereum !== 'undefined') {
+        try {
+            // Connessione a MetaMask o altro wallet Ethereum
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
 
-    const donationAddress = getDonationAddress(crypto); // Ottieni l'indirizzo di donazione
-    const donationAmount = web3.utils.toWei(amount, 'ether'); // Converte l'importo in wei (unità di Ethereum)
+            // Ottieni l'indirizzo dell'utente
+            const userAddress = await signer.getAddress();
 
-    try {
-        const tx = await web3.eth.sendTransaction({
-            from: currentProvider,
-            to: donationAddress,
-            value: donationAmount,
-        });
-        alert(`Transazione completata! Hash della transazione: ${tx.transactionHash}`);
-    } catch (error) {
-        console.error('Errore durante l\'invio della donazione', error);
-        alert("Si è verificato un errore durante la donazione.");
+            // Ottieni l'indirizzo della criptovaluta in base al tipo
+            const donationAddress = getDonationAddress(crypto);
+
+            // Chiedi l'importo della donazione all'utente
+            const amount = prompt("Quanto vuoi donare? (in ETH)");
+
+            // Verifica se l'importo è valido
+            if (amount && !isNaN(amount)) {
+                const donationAmount = ethers.parseUnits(amount, 'ether');
+
+                // Invia la transazione
+                const tx = await signer.sendTransaction({
+                    to: donationAddress,
+                    value: donationAmount,
+                });
+
+                alert(`Transazione completata! Hash della transazione: ${tx.hash}`);
+            } else {
+                alert("Importo non valido.");
+            }
+        } catch (error) {
+            console.error('Errore durante l\'invio della donazione:', error);
+            alert("Errore durante la connessione al wallet o l'invio della donazione.");
+        }
+    } else {
+        alert("Wallet Web3 non rilevato. Per favore, installa MetaMask o un altro wallet Web3.");
     }
 }
 
-// Funzione per ottenere l'indirizzo di donazione in base alla criptovaluta scelta
+// Funzione per ottenere l'indirizzo di donazione in base alla criptovaluta
 function getDonationAddress(crypto) {
     switch (crypto) {
         case 'eth':
@@ -73,14 +69,9 @@ function getDonationAddress(crypto) {
     }
 }
 
-// Aggiungi un evento di clic per ogni bottone di donazione
+// Aggiungi eventi ai pulsanti di donazione
 document.getElementById('eth-donate').addEventListener('click', () => {
-    const amount = prompt("Quanto vuoi donare in ETH?");
-    if (amount && !isNaN(amount)) {
-        sendDonation('eth', amount);
-    } else {
-        alert("Importo non valido.");
-    }
+    donateWithWallet('eth');
 });
 
 document.getElementById('solana-donate').addEventListener('click', () => {
