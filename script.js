@@ -14,8 +14,8 @@ async function donateWithWallet(crypto) {
     if (typeof window.ethereum !== 'undefined') {
         try {
             // Connessione a MetaMask o altro wallet Ethereum
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
 
             // Ottieni l'indirizzo dell'utente
             const userAddress = await signer.getAddress();
@@ -24,17 +24,29 @@ async function donateWithWallet(crypto) {
             const donationAddress = getDonationAddress(crypto);
 
             // Chiedi l'importo della donazione all'utente
-            const amount = prompt("Quanto vuoi donare? (in ETH)");
+            const amountInEth = prompt("Quanto vuoi donare? (in ETH)");
 
             // Verifica se l'importo è valido
-            if (amount && !isNaN(amount)) {
-                const donationAmount = ethers.parseUnits(amount, 'ether');
+            if (amountInEth && !isNaN(amountInEth)) {
+                // Converti l'importo in ETH in base alla criptovaluta selezionata
+                const amount = convertEthToCrypto(amountInEth, crypto);
 
-                // Invia la transazione
-                const tx = await signer.sendTransaction({
-                    to: donationAddress,
-                    value: donationAmount,
-                });
+                // Invia la transazione (questa parte va modificata in base alla criptovaluta)
+                let tx;
+                if (crypto === 'eth' || crypto === 'base' || crypto === 'polygon') { 
+                    // Per ETH, Base e Polygon, usiamo la stessa logica di invio transazione
+                    const donationAmount = ethers.utils.parseUnits(amount, 'ether');
+                    tx = await signer.sendTransaction({
+                        to: donationAddress,
+                        value: donationAmount,
+                    });
+                } else {
+                    // Per altre criptovalute, la logica di invio transazione va implementata 
+                    // in base alla libreria e al metodo di interazione con la blockchain specifica.
+                    // Ad esempio, per Solana, potresti usare web3.js o @solana/web3.js
+                    alert(`Donazione in ${crypto} non ancora implementata.`);
+                    return; 
+                }
 
                 alert(`Transazione completata! Hash della transazione: ${tx.hash}`);
             } else {
@@ -49,24 +61,29 @@ async function donateWithWallet(crypto) {
     }
 }
 
-// Funzione per ottenere l'indirizzo di donazione in base alla criptovaluta
-function getDonationAddress(crypto) {
+// Funzione per convertire ETH in altre criptovalute (implementazione di esempio)
+// **NOTA:** Questa funzione è solo un esempio e non riflette tassi di cambio reali.
+// Dovresti integrare un servizio di API per ottenere tassi di cambio aggiornati.
+function convertEthToCrypto(amountInEth, crypto) {
     switch (crypto) {
         case 'eth':
-            return '0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c';
+            return amountInEth;
         case 'solana':
-            return 'E3JUcjyR6UCJtppU24iDrq82FyPeV9nhL1PKHx57iPXu';
+            // Esempio: 1 ETH = 50 SOL (Tasso di cambio fittizio)
+            return (parseFloat(amountInEth) * 50).toString();
         case 'base':
-            return '0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c';
+            return amountInEth;
         case 'polygon':
-            return '0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c';
-        case 'btc-taproot':
-            return 'bc1p5paurws3z4c8gslznmvnxjw4hlesfe02yncqaqyljvl9vxuchk6smcen70';
-        case 'btc-segwit':
-            return 'bc1qrfv880kc8qamanalc5kcqs9q5wszh90e5eggyz';
+            return amountInEth;
+        // Aggiungi altre criptovalute e i loro tassi di cambio qui
         default:
             throw new Error("Cryptocurrency not supported");
     }
+}
+
+// Funzione per ottenere l'indirizzo di donazione in base alla criptovaluta
+function getDonationAddress(crypto) {
+    // ... (codice invariato) ...
 }
 
 // Aggiungi eventi ai pulsanti di donazione
@@ -75,7 +92,7 @@ document.getElementById('eth-donate').addEventListener('click', () => {
 });
 
 document.getElementById('solana-donate').addEventListener('click', () => {
-    alert("Solana non supporta il trasferimento tramite Web3.js direttamente. Usa il tuo wallet Solana.");
+    donateWithWallet('solana'); 
 });
 
 // Altri eventi per le altre criptovalute possono essere aggiunti allo stesso modo.
