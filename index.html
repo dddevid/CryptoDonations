@@ -1,68 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Donation - ddevid_1 Twitch</title>
+    <title>Donazioni Cryptovalute</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="container">
         <header>
-            <h1>Donate to ddevid_1 on Twitch</h1>
-            <p>Your donations help support the channel!</p>
+            <h1>Supporta il mio canale Twitch con una donazione in crypto!</h1>
+            <p>Il mio username su Twitch: <strong>ddevid_1</strong></p>
         </header>
 
-        <div class="wallet-connection">
-            <button id="connect-wallet">Connect Wallet</button>
-        </div>
-
         <div class="donation-options">
-            <h2>Choose a Cryptocurrency to Donate</h2>
-
-            <div class="crypto-card" id="solana">
-                <h3>Solana</h3>
-                <p>Address: <span>E3JUcjyR6UCJtppU24iDrq82FyPeV9nhL1PKHx57iPXu</span></p>
-                <button onclick="copyToClipboard('E3JUcjyR6UCJtppU24iDrq82FyPeV9nhL1PKHx57iPXu')">Copy Address</button>
-            </div>
-
-            <div class="crypto-card" id="eth">
+            <div class="crypto-card">
                 <h3>Ethereum (ETH)</h3>
-                <p>Address: <span>0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c</span></p>
-                <button onclick="copyToClipboard('0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c')">Copy Address</button>
+                <p>Indirizzo: <span>0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c</span></p>
+                <button onclick="copyToClipboard('0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c')">Copia Indirizzo</button>
+                <button onclick="openWallet('ethereum')">Donare con Ethereum</button>
             </div>
 
-            <div class="crypto-card" id="base">
-                <h3>Base</h3>
-                <p>Address: <span>0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c</span></p>
-                <button onclick="copyToClipboard('0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c')">Copy Address</button>
+            <div class="crypto-card">
+                <h3>Solana (SOL)</h3>
+                <p>Indirizzo: <span>E3JUcjyR6UCJtppU24iDrq82FyPeV9nhL1PKHx57iPXu</span></p>
+                <button onclick="copyToClipboard('E3JUcjyR6UCJtppU24iDrq82FyPeV9nhL1PKHx57iPXu')">Copia Indirizzo</button>
+                <button onclick="openWallet('solana')">Donare con Solana</button>
             </div>
 
-            <div class="crypto-card" id="polygon">
-                <h3>Polygon</h3>
-                <p>Address: <span>0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c</span></p>
-                <button onclick="copyToClipboard('0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c')">Copy Address</button>
+            <div class="crypto-card">
+                <h3>Polygon (MATIC)</h3>
+                <p>Indirizzo: <span>0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c</span></p>
+                <button onclick="copyToClipboard('0x01195b0Ae97b2D461aB0C746663bFE915eb9ac7c')">Copia Indirizzo</button>
+                <button onclick="openWallet('polygon')">Donare con Polygon</button>
             </div>
 
-            <div class="crypto-card" id="bitcoin-taproot">
-                <h3>Bitcoin Taproot</h3>
-                <p>Address: <span>bc1p5paurws3z4c8gslznmvnxjw4hlesfe02yncqaqyljvl9vxuchk6smcen70</span></p>
-                <button onclick="copyToClipboard('bc1p5paurws3z4c8gslznmvnxjw4hlesfe02yncqaqyljvl9vxuchk6smcen70')">Copy Address</button>
-            </div>
-
-            <div class="crypto-card" id="bitcoin-native-segwit">
-                <h3>Bitcoin Native Segwit</h3>
-                <p>Address: <span>bc1qrfv880kc8qamanalc5kcqs9q5wszh90e5eggyz</span></p>
-                <button onclick="copyToClipboard('bc1qrfv880kc8qamanalc5kcqs9q5wszh90e5eggyz')">Copy Address</button>
+            <div class="crypto-card">
+                <h3>Bitcoin (BTC)</h3>
+                <p>Indirizzo Taproot: <span>bc1p5paurws3z4c8gslznmvnxjw4hlesfe02yncqaqyljvl9vxuchk6smcen70</span></p>
+                <p>Indirizzo Native Segwit: <span>bc1qrfv880kc8qamanalc5kcqs9q5wszh90e5eggyz</span></p>
+                <button onclick="copyToClipboard('bc1p5paurws3z4c8gslznmvnxjw4hlesfe02yncqaqyljvl9vxuchk6smcen70')">Copia Indirizzo Taproot</button>
+                <button onclick="copyToClipboard('bc1qrfv880kc8qamanalc5kcqs9q5wszh90e5eggyz')">Copia Indirizzo Native Segwit</button>
+                <button onclick="openWallet('bitcoin')">Donare con Bitcoin</button>
             </div>
         </div>
 
         <footer>
-            <p>Thank you for supporting the channel!</p>
+            <p>Grazie per il supporto! 🎉</p>
         </footer>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
